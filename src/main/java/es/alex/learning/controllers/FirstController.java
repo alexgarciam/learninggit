@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,4 +20,17 @@ public class FirstController {
 	public List<String> getUsers() {
 		return Arrays.asList("Alex","Manuel","Benzema","paco");
 	}
+	
+	
+	@GetMapping("/usuarios")
+	public List<String> getUsuarios() {
+		return Arrays.asList("Alex","Manuel","Benzema","paco");
+	}
+	
+	@GetMapping("/hello1")
+	@ResponseBody
+	public String helloWorld1() {
+		return "hello Alex";
+	}
+	
 }
