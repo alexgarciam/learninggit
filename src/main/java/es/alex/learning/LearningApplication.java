@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LearningApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Spring boot application!!");
+		System.out.println("Spring boot application to learn git, spring REST and SpringBoot!!");
 		SpringApplication.run(LearningApplication.class, args);
 	}
 
