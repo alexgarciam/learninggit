@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.controller.classes.User;
+
 
 @Component
 public class UsersDaoService {
@@ -22,5 +24,23 @@ public class UsersDaoService {
 
 	public List<User> findAll() {
 		return users;
+	}
+	
+
+	public User save(User user) {
+		if (user.getId() == null) {
+			user.setId(++usersCount);
+		}
+		users.add(user);
+		return user;
+	}
+
+	public User findOne(int id) {
+		for (User user : users) {
+			if (user.getId() == id) {
+				return user;
+			}
+		}
+		return null;
 	}
 }
