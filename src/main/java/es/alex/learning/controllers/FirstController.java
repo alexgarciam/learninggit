@@ -3,15 +3,22 @@ package es.alex.learning.controllers;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.alex.learning.service.User;
+import es.alex.learning.service.UsersDaoService;
+
 @RestController
 public class FirstController {
 
+	@Autowired
+	UsersDaoService userService;
+	
 	
 	@GetMapping("/helloworld")
 	public String helloWorldBean() {
@@ -45,6 +52,12 @@ public class FirstController {
 	@ResponseBody
 	public String helloWorld1() {
 		return "hello Alex";
+	}
+	
+	@GetMapping("/users")
+	@ResponseBody
+	public List<User> getAllUsers() {
+		return userService.findAll();
 	}
 	
 }
