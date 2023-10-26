@@ -2,18 +2,16 @@ package es.alex.learning.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.controller.classes.User;
-
-
 @Component
 public class UsersDaoService {
-	
+
 	private static List<User> users = new ArrayList<>();
-	
+
 	private static int usersCount = 3;
 
 	static {
@@ -25,7 +23,6 @@ public class UsersDaoService {
 	public List<User> findAll() {
 		return users;
 	}
-	
 
 	public User save(User user) {
 		if (user.getId() == null) {
@@ -38,6 +35,19 @@ public class UsersDaoService {
 	public User findOne(int id) {
 		for (User user : users) {
 			if (user.getId() == id) {
+				return user;
+			}
+		}
+		return null;
+	}
+
+	public User deleteById(int id) {
+
+		Iterator<User> iterator = users.iterator();
+		while (iterator.hasNext()) {
+			User user = iterator.next();
+			if (user.getId() == id) {
+				iterator.remove();
 				return user;
 			}
 		}
