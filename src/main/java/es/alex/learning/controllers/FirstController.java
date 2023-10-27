@@ -52,12 +52,7 @@ public class FirstController {
 	@ResponseBody
 	public String helloWorld1() {
 		return "hello Alex";
-	}
+	}	
 	
-	@GetMapping("/users")
-	@ResponseBody
-	public List<User> getAllUsers() {
-		return userService.findAll();
-	}
 	
 }
