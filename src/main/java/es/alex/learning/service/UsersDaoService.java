@@ -1,30 +1,31 @@
 package es.alex.learning.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import es.alex.learning.classes.Usuarios;
+
 @Component
 public class UsersDaoService {
 
-	private static List<User> users = new ArrayList<>();
+	private static List<Usuarios> users = new ArrayList<>();
 
-	private static int usersCount = 3;
+	private static Long usersCount = new Long(3);
 
 	static {
-		users.add(new User(1, "Rafa", new Date()));
-		users.add(new User(2, "Roger", new Date()));
-		users.add(new User(3, "Novack", new Date()));
+		users.add(new Usuarios("alex", "Bauer", "alex", "sa"));
+		users.add(new Usuarios("pepe", "O'Brian", "pepe", "sa"));
+		users.add(new Usuarios("paco", "O'Brian", "paco", "sa"));
 	}
 
-	public List<User> findAll() {
+	public List<Usuarios> findAll() {
 		return users;
 	}
 
-	public User save(User user) {
+	public Usuarios save(Usuarios user) {
 		if (user.getId() == null) {
 			user.setId(++usersCount);
 		}
@@ -32,8 +33,8 @@ public class UsersDaoService {
 		return user;
 	}
 
-	public User findOne(int id) {
-		for (User user : users) {
+	public Usuarios findOne(int id) {
+		for (Usuarios user : users) {
 			if (user.getId() == id) {
 				return user;
 			}
@@ -41,11 +42,11 @@ public class UsersDaoService {
 		return null;
 	}
 
-	public User deleteById(int id) {
+	public Usuarios deleteById(int id) {
 
-		Iterator<User> iterator = users.iterator();
+		Iterator<Usuarios> iterator = users.iterator();
 		while (iterator.hasNext()) {
-			User user = iterator.next();
+			Usuarios user = iterator.next();
 			if (user.getId() == id) {
 				iterator.remove();
 				return user;

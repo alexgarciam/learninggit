@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.alex.learning.service.User;
 import es.alex.learning.service.UsersDaoService;
 
 @RestController
