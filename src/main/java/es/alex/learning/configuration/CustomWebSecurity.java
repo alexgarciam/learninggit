@@ -11,6 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
+
 @Configuration
 @EnableWebSecurity
 public class CustomWebSecurity {
@@ -18,11 +22,24 @@ public class CustomWebSecurity {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+			
+		
+			.authorizeHttpRequests((requests) -> requests
+                // another matchers
+                .requestMatchers(toH2Console()).permitAll() // <-
+                // another matchers
+            )
 			.authorizeHttpRequests((authorize) -> authorize
-				.anyRequest().authenticated()
-			)
-			.httpBasic(Customizer.withDefaults())
-			.formLogin(Customizer.withDefaults());
+					.anyRequest().authenticated()
+				)
+				.httpBasic(Customizer.withDefaults())
+				.formLogin(Customizer.withDefaults())
+            .csrf((protection) -> protection
+                .ignoringRequestMatchers(toH2Console()) // <- 
+            )
+            .headers((header) -> header
+                .frameOptions().sameOrigin()
+            );
 
 		return http.build();
 	}
@@ -30,8 +47,8 @@ public class CustomWebSecurity {
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails userDetails = User.withDefaultPasswordEncoder()
-			.username("user")
-			.password("password")
+			.username("alex")
+			.password("alex")
 			.roles("USER")
 			.build();
 
