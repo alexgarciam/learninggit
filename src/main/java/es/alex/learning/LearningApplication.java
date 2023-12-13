@@ -13,8 +13,12 @@ import org.springframework.context.annotation.Bean;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
+import com.hazelcast.config.DiscoveryConfig;
+import com.hazelcast.config.DiscoveryStrategyConfig;
+import com.hazelcast.config.SSLConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategyFactory;
 
 import es.alex.learning.classes.Usuarios;
 import es.alex.learning.repos.UserRepository;
@@ -51,7 +55,13 @@ public class LearningApplication {
 
 		Config helloWorldConfig = new Config();
 		helloWorldConfig.setClusterName("hello-world");
-
+	
+		//servicio dns		
+		helloWorldConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+		helloWorldConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
+	      .setProperty("service-dns", "hazelcast-service");
+		
+		
 		HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
 
 		Map<String, String> map = hz.getMap("my-distributed-map");
@@ -86,7 +96,7 @@ public class LearningApplication {
 		System.out.println();
 		System.out.println();
 		System.out.println("---------------------------------------------------------");
-		System.out.println("			Starting Hazelcast Client");
+		System.out.println("			Starting Hazelcast Client 2.0				 ");
 		System.out.println("---------------------------------------------------------");
 
 		System.out.println();
@@ -95,7 +105,9 @@ public class LearningApplication {
 
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.setClusterName("hello-world");
-		clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701", "127.0.0.1:5702", "127.0.0.1:5703");
+		clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true)
+	      .setProperty("service-dns", "hazelcast-service");
+		//clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701", "127.0.0.1:5702", "127.0.0.1:5703");
 		client = HazelcastClient.newHazelcastClient(clientConfig);
 		System.out.println();
 		System.out.println();
