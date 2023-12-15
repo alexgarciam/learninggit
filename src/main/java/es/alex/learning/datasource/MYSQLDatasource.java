@@ -5,21 +5,20 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import es.alex.learning.configuration.DataSourceProperties;
 
@@ -37,12 +36,30 @@ public class MYSQLDatasource {
 	@Bean
 	@Primary
 	public DataSource mysqlDatasource() {
+		
+		//creación del DS con Hikari
+		HikariConfig config = new HikariConfig();
+		HikariDataSource ds;
+		
+		config.setJdbcUrl( dataSourceProperties.getMysqlurl() );
+        config.setUsername( dataSourceProperties.getMysqlusername() );
+        config.setPassword( dataSourceProperties.getMysqlpassword() );
+        config.addDataSourceProperty( "cachePrepStmts" , "true" );
+        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
+        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+        ds = new HikariDataSource( config );
+		
+        //Creación con Spring sin hikari
+        /*
 		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
 		dataSourceBuilder.driverClassName(dataSourceProperties.getMysqldriverclassname());
 		dataSourceBuilder.url(dataSourceProperties.getMysqlurl());
 		dataSourceBuilder.username(dataSourceProperties.getMysqlusername());
 		dataSourceBuilder.password(dataSourceProperties.getMysqlpassword());
 		return dataSourceBuilder.build();
+		*/
+		
+		return ds;
 	}
 	
 		

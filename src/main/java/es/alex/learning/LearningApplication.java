@@ -20,7 +20,9 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategyFactory;
 
+import es.alex.learning.classes.mysql.Telefonos;
 import es.alex.learning.classes.mysql.Usuarios;
+import es.alex.learning.repos.mysql.TelefonoRepository;
 import es.alex.learning.repos.mysql.UserRepository;
 
 @SpringBootApplication
@@ -131,32 +133,33 @@ public class LearningApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(UserRepository userRepository) {
+	public CommandLineRunner demo(TelefonoRepository telefonoRepository) {
 		return (args) -> {
 
-			userRepository.save(new Usuarios("alex", "Bauer", "alex", "sa"));
-			userRepository.save(new Usuarios("pepe", "O'Brian", "pepe", "sa"));
+			telefonoRepository.save(new Telefonos("Redmi 12", "Redmi"));
+			telefonoRepository.save(new Telefonos("Redmi 11", "Redmi"));
+			telefonoRepository.save(new Telefonos("iphone 13", "iphone"));
 
 			// fetch all users
-			System.out.println("Users found with findAll():");
+			System.out.println("telefonoss found with findAll():");
 			System.out.println("-------------------------------");
-			userRepository.findAll().forEach(user -> {
+			telefonoRepository.findAll().forEach(user -> {
 				System.out.println(user.toString());
 			});
 			System.out.println("");
 
 			// fetch an individual user by ID
-			Usuarios user = userRepository.findById(1L);
-			System.out.println("User found with findById(1L):");
+			Telefonos telefono = telefonoRepository.findById(1L);
+			System.out.println("telefonoss found with findById(1L):");
 			System.out.println("--------------------------------");
-			System.out.println(user.toString());
+			System.out.println(telefono.toString());
 			System.out.println("");
 
 			// fetch users by login
-			System.out.println("User found with findByLogin('alex'):");
+			System.out.println("telefonoss found with findByNombre('redmi'):");
 			System.out.println("--------------------------------------------");
-			userRepository.findByLogin("alex").forEach(bauer -> {
-				System.out.println(bauer.toString());
+			telefonoRepository.findByName("redmi").forEach(phone -> {
+				System.out.println(phone.toString());
 			});
 			System.out.println("");
 
