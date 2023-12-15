@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import es.alex.learning.classes.Usuarios;
-import es.alex.learning.repos.UserRepository;
+import es.alex.learning.classes.mysql.Usuarios;
+import es.alex.learning.repos.mysql.UserRepository;
 
 @Component
 public class ExecutorJPA implements CommandLineRunner {

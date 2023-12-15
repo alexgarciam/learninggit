@@ -1,4 +1,4 @@
-package es.alex.learning.classes;
+package es.alex.learning.classes.mysql;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

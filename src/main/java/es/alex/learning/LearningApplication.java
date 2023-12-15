@@ -20,8 +20,8 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategyFactory;
 
-import es.alex.learning.classes.Usuarios;
-import es.alex.learning.repos.UserRepository;
+import es.alex.learning.classes.mysql.Usuarios;
+import es.alex.learning.repos.mysql.UserRepository;
 
 @SpringBootApplication
 public class LearningApplication {
@@ -105,9 +105,8 @@ public class LearningApplication {
 
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.setClusterName("hello-world");
-		clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true)
-	      .setProperty("service-dns", "hazelcast-service");
-		//clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701", "127.0.0.1:5702", "127.0.0.1:5703");
+		//clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true).setProperty("service-dns", "hazelcast-service");
+		clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701", "127.0.0.1:5702", "127.0.0.1:5703");
 		client = HazelcastClient.newHazelcastClient(clientConfig);
 		System.out.println();
 		System.out.println();

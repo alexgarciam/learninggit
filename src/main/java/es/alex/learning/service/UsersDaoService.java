@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import es.alex.learning.classes.Usuarios;
+import es.alex.learning.classes.mysql.Usuarios;
 
 @Component
 public class UsersDaoService {

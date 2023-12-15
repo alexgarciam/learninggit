@@ -1,10 +1,10 @@
-package es.alex.learning.repos;
+package es.alex.learning.repos.mysql;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import es.alex.learning.classes.Usuarios;
+import es.alex.learning.classes.mysql.Usuarios;
 
 public interface UserRepository extends CrudRepository<Usuarios, Long> {
 
