@@ -13,17 +13,12 @@ import org.springframework.context.annotation.Bean;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
-import com.hazelcast.config.DiscoveryConfig;
-import com.hazelcast.config.DiscoveryStrategyConfig;
-import com.hazelcast.config.SSLConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategyFactory;
 
 import es.alex.learning.classes.mysql.Telefonos;
-import es.alex.learning.classes.mysql.Usuarios;
+import es.alex.learning.configuration.DataSourceProperties;
 import es.alex.learning.repos.mysql.TelefonoRepository;
-import es.alex.learning.repos.mysql.UserRepository;
 
 @SpringBootApplication
 public class LearningApplication {
@@ -31,8 +26,13 @@ public class LearningApplication {
 	@Autowired
 	BuildProperties buildProperties;
 
+	@Autowired
+	private DataSourceProperties dataSourceProperties;
+
 	public static void main(String[] args) {
 		System.out.println("Spring boot application to learn git, spring REST and SpringBoot!!");
+		String profile_active = System.getenv("SPRING_PROFILES_ACTIVE");
+		System.out.println("active profile: "+profile_active);
 
 		SpringApplication.run(LearningApplication.class, args);
 
@@ -57,13 +57,16 @@ public class LearningApplication {
 
 		Config helloWorldConfig = new Config();
 		helloWorldConfig.setClusterName("hello-world");
-	
-		//servicio dns		
-		helloWorldConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
-		helloWorldConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
-	      .setProperty("service-dns", "hazelcast-service");
-		
-		
+
+		String environment = dataSourceProperties.getEnvironment();
+		if (!environment.equals("local")) {
+			// servicio dns
+			helloWorldConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+			helloWorldConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
+					.setProperty("service-dns", "hazelcast-service");
+
+		}
+
 		HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
 
 		Map<String, String> map = hz.getMap("my-distributed-map");
@@ -88,8 +91,8 @@ public class LearningApplication {
 		return hz;
 	}
 
-	@Bean(name = "HazelcastInstanceClient")
-	public HazelcastInstance HazelcastInstanceClient() throws IOException {
+	@Bean
+	public ClientConfig clientConfig() throws IOException {
 		// ------------------------------
 		// hazelcast client
 		HazelcastInstance client;
@@ -107,8 +110,14 @@ public class LearningApplication {
 
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.setClusterName("hello-world");
-		//clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true).setProperty("service-dns", "hazelcast-service");
-		clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701", "127.0.0.1:5702", "127.0.0.1:5703");
+		clientConfig.getTpcConfig().setEnabled(false);
+		/*
+		 * clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true)
+		 * .setProperty("namespace", "default") .setProperty("service-name",
+		 * "hazelcast-service");
+		 */
+		// clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701",
+		// "127.0.0.1:5702", "127.0.0.1:5703");
 		client = HazelcastClient.newHazelcastClient(clientConfig);
 		System.out.println();
 		System.out.println();
@@ -121,15 +130,17 @@ public class LearningApplication {
 		System.out.println();
 		System.out.println();
 
-		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		System.out.println(
+				"------------------------------------------------------------------------------------------------------------------");
 		System.out.println("			deployed version: " + buildProperties.getVersion());
-		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		System.out.println(
+				"------------------------------------------------------------------------------------------------------------------");
 
 		System.out.println();
 		System.out.println();
 		System.out.println();
 
-		return client;
+		return clientConfig;
 	}
 
 	@Bean

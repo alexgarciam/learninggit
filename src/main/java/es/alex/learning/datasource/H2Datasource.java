@@ -26,8 +26,12 @@ import com.zaxxer.hikari.HikariDataSource;
 import es.alex.learning.configuration.DataSourceProperties;
 
 @Configuration
-@EnableJpaRepositories(entityManagerFactoryRef = "h2entityManagerFactory", transactionManagerRef = "h2transactionManager", basePackages = {
-		"es.alex.learning.repos.h2", })
+@EnableJpaRepositories(
+		entityManagerFactoryRef = "h2entityManagerFactory", 
+		transactionManagerRef = "h2transactionManager", 
+		basePackages = {
+		"es.alex.learning.repos.h2", }
+		)
 public class H2Datasource {
 
 	@Autowired

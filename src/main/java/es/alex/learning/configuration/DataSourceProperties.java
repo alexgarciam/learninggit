@@ -14,6 +14,9 @@ public class DataSourceProperties {
 	@Value("${test.hazelcast.datasource.mysql.url}")
 	private String mysqlurl;
 	
+	@Value("${test.environment}")
+	private String environment;
+	
 	@Value("${test.hazelcast.datasource.mysql.username}")
 	private String mysqlusername;
 	

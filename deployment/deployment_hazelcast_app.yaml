@@ -14,9 +14,15 @@ spec:
     spec:
       containers:
         - name: hazelcastapp
-          image: agmarchena/hazelcastapp:1.0.3 
+          image: agmarchena/hazelcastapp:1.0.7 
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: prod
 # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 
 # The port that the container is running on in the cluster
+          envFrom:
+          - configMapRef:
+              name: app-config

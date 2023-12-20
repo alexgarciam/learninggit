@@ -13,7 +13,7 @@ import com.hazelcast.core.HazelcastInstance;
 public class CommandController {
 	
 	@Autowired
-	@Qualifier("HazelcastInstanceClient")
+	@Qualifier("hazelcastInstance")
 	HazelcastInstance hazelcastInstance;
 	
 

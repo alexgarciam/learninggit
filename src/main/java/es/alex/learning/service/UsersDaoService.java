@@ -16,9 +16,9 @@ public class UsersDaoService {
 	private static Long usersCount = new Long(3);
 
 	static {
-		users.add(new Usuarios("alex", "Bauer", "alex", "sa"));
-		users.add(new Usuarios("pepe", "O'Brian", "pepe", "sa"));
-		users.add(new Usuarios("paco", "O'Brian", "paco", "sa"));
+		users.add(new Usuarios("alex1", "Bauer", "alex", "sa"));
+		users.add(new Usuarios("alex12", "O'Brian", "pepe", "sa"));
+		users.add(new Usuarios("alex13", "O'Brian", "paco", "sa"));
 	}
 
 	public List<Usuarios> findAll() {

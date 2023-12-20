@@ -23,8 +23,10 @@ public class ExecutorJPA implements CommandLineRunner {
 		System.out.println("Spring JPA");
 
 
-		userRepository.save(new Usuarios("alex", "Bauer", "alex", "sa"));
-		userRepository.save(new Usuarios("pepe", "O'Brian", "pepe", "sa"));
+		userRepository.save(new Usuarios("alex1", "Bauer", "alex", "sa"));
+		userRepository.save(new Usuarios("alex12", "O'Brian", "pepe", "sa"));
+		userRepository.save(new Usuarios("alex13", "O'Brian", "pepe", "sa"));
+		userRepository.save(new Usuarios("alex14", "O'Brian", "pepe", "sa"));
 
 		// fetch all users
 		System.out.println("Users found with findAll():");
