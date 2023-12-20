@@ -41,6 +41,7 @@ public class LearningApplication {
 	@Bean(name = "hazelcastInstance")
 	public HazelcastInstance hazelcastInstance() throws IOException {
 
+		System.out.println("Changing value: "+dataSourceProperties.getChangingvalue());		
 		// ------------------------------
 		// hazelcast
 

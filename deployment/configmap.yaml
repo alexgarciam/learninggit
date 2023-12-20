@@ -1,0 +1,9 @@
+# Use config map for not-secret configuration data
+
+apiVersion: v1
+data:
+  logging.level.root: info
+  test.changing.value: a ver ahora??
+kind: ConfigMap
+metadata:  
+  name: env-configmap2

@@ -10,6 +10,10 @@ import lombok.Setter;
 @Configuration
 @Setter @Getter
 public class DataSourceProperties {
+	
+	
+	@Value("${test.changing.value}")
+	private String changingvalue;
 
 	@Value("${test.hazelcast.datasource.mysql.url}")
 	private String mysqlurl;
