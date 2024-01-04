@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.hazelcast.HazelcastAutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -21,7 +22,7 @@ import es.alex.learning.configuration.DataSourceProperties;
 import es.alex.learning.repos.mysql.TelefonoRepository;
 import lombok.extern.log4j.Log4j2;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = HazelcastAutoConfiguration.class)
 @Log4j2
 public class LearningApplication {
 
@@ -97,7 +98,7 @@ public class LearningApplication {
 		return hz;
 	}
 
-	
+	/*
 	@Bean
 	public ClientConfig clientConfig() throws IOException {
 		// ------------------------------
@@ -158,7 +159,7 @@ public class LearningApplication {
 
 		return clientConfig;
 	}
-
+*/
 	
 	@Bean
 	public CommandLineRunner demo(TelefonoRepository telefonoRepository) {

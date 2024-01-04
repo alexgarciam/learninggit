@@ -22,8 +22,8 @@ public class ExecutorJPA implements CommandLineRunner {
 	@Autowired
 	UserRepository userRepository;
 
-	@Autowired
-	ClientConfig clientConfig;  
+	//@Autowired
+	//ClientConfig clientConfig;  
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -65,6 +65,8 @@ public class ExecutorJPA implements CommandLineRunner {
 		System.out.println("");
 
 		System.out.println("--------------------------------------------");
+		
+		/*
 
 		System.out.println("TESTING HAZELCAST CLIENT");
 		System.out.println("--------------------------------------------");
@@ -78,6 +80,8 @@ public class ExecutorJPA implements CommandLineRunner {
 		System.out.println(map.get("1"));
 		System.out.println(map.get("2"));
 		System.out.println(map.get("3"));
+		
+		*/
 		
 	}
 

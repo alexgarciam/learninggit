@@ -347,7 +347,7 @@
         </azure>
         <kubernetes enabled="true">
             <namespace>default</namespace>
-            <service-dns>hazelcast-service</service-dns>
+            <service-dns>hazelcast-service44</service-dns>
             <service-label-name>MY-SERVICE-LABEL-NAME</service-label-name>
             <service-label-value>MY-SERVICE-LABEL-VALUE</service-label-value>
         </kubernetes>

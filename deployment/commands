@@ -1,0 +1,5 @@
+
+docker build -t agmarchena/hazelcastapp:1.0.10 .
+
+kubectl apply -f .\deployment\deployment_hazelcast_app.yaml
+
