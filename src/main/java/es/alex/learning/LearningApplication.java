@@ -19,8 +19,10 @@ import com.hazelcast.core.HazelcastInstance;
 import es.alex.learning.classes.mysql.Telefonos;
 import es.alex.learning.configuration.DataSourceProperties;
 import es.alex.learning.repos.mysql.TelefonoRepository;
+import lombok.extern.log4j.Log4j2;
 
 @SpringBootApplication
+@Log4j2
 public class LearningApplication {
 
 	@Autowired
@@ -32,7 +34,7 @@ public class LearningApplication {
 	public static void main(String[] args) {
 		System.out.println("Spring boot application to learn git, spring REST and SpringBoot!!");
 		String profile_active = System.getenv("SPRING_PROFILES_ACTIVE");
-		System.out.println("active profile: "+profile_active);
+		System.out.println("active profile: " + profile_active);
 
 		SpringApplication.run(LearningApplication.class, args);
 
@@ -41,7 +43,7 @@ public class LearningApplication {
 	@Bean(name = "hazelcastInstance")
 	public HazelcastInstance hazelcastInstance() throws IOException {
 
-		System.out.println("Changing value: "+dataSourceProperties.getChangingvalue());		
+		System.out.println("Changing value: " + dataSourceProperties.getChangingvalue());
 		// ------------------------------
 		// hazelcast
 
@@ -57,15 +59,18 @@ public class LearningApplication {
 		System.out.println();
 
 		Config helloWorldConfig = new Config();
-		helloWorldConfig.setClusterName("hello-world");
+		helloWorldConfig.setClusterName("dev");
 
 		String environment = dataSourceProperties.getEnvironment();
 		if (!environment.equals("local")) {
+			log.debug("connecting hazelcasst server to cluster kubernetes environment");
 			// servicio dns
 			helloWorldConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
 			helloWorldConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
 					.setProperty("service-dns", "hazelcast-service");
 
+		} else {
+			log.debug("connecting hazelcasst server to cluster local environment");
 		}
 
 		HazelcastInstance hz = Hazelcast.newHazelcastInstance(helloWorldConfig);
@@ -92,6 +97,7 @@ public class LearningApplication {
 		return hz;
 	}
 
+	
 	@Bean
 	public ClientConfig clientConfig() throws IOException {
 		// ------------------------------
@@ -110,15 +116,24 @@ public class LearningApplication {
 		System.out.println();
 
 		ClientConfig clientConfig = new ClientConfig();
-		clientConfig.setClusterName("hello-world");
+		clientConfig.setClusterName("dev");
 		clientConfig.getTpcConfig().setEnabled(false);
-		/*
-		 * clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true)
-		 * .setProperty("namespace", "default") .setProperty("service-name",
-		 * "hazelcast-service");
-		 */
-		// clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701",
-		// "127.0.0.1:5702", "127.0.0.1:5703");
+
+		String environment = dataSourceProperties.getEnvironment();
+
+		if (!environment.equals("local")) {
+			log.debug("connecting hazelcasst server to cluster kubernetes environment");
+			clientConfig.getNetworkConfig().getCloudConfig().setEnabled(false);
+			clientConfig.getNetworkConfig().getAutoDetectionConfig().setEnabled(false);
+			clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true);
+			clientConfig.getNetworkConfig().getKubernetesConfig().setEnabled(true).setProperty("namespace", "default")
+					.setProperty("service-dns", "hazelcast-service");
+		} else {
+			log.debug("connecting hazelcasst server to cluster local environment");
+			clientConfig.getNetworkConfig().addAddress("127.0.0.1:5701",
+					 "127.0.0.1:5702", "127.0.0.1:5703");
+		}
+		
 		client = HazelcastClient.newHazelcastClient(clientConfig);
 		System.out.println();
 		System.out.println();
@@ -144,6 +159,7 @@ public class LearningApplication {
 		return clientConfig;
 	}
 
+	
 	@Bean
 	public CommandLineRunner demo(TelefonoRepository telefonoRepository) {
 		return (args) -> {

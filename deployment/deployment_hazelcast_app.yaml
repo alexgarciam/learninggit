@@ -14,10 +14,16 @@ spec:
     spec:
       containers:
         - name: hazelcastapp
-          image: agmarchena/hazelcastapp:1.0.7 
+          image: agmarchena/hazelcastapp:1.0.10 
           env:
           - name: SPRING_PROFILES_ACTIVE
-            value: prod          
+            value: prod
+          - name: HZ_NETWORK_JOIN_KUBERNETES_SERVICENAME
+            value: hazelcast-service
+          - name: HZ_NETWORK_JOIN_MULTICAST_ENABLED
+            value: 'false'
+          - name: HZ_NETWORK_JOIN_KUBERNETES_ENABLED
+            value: 'true'          
           #- name: test.changing.value
           #  value: esto esta puesto en el archivo yaml
           envFrom:

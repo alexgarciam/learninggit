@@ -1,8 +1,15 @@
 package es.alex.learning;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 
 import es.alex.learning.classes.mysql.Usuarios;
 import es.alex.learning.repos.mysql.UserRepository;
@@ -15,6 +22,8 @@ public class ExecutorJPA implements CommandLineRunner {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	ClientConfig clientConfig;  
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -50,6 +59,25 @@ public class ExecutorJPA implements CommandLineRunner {
 			System.out.println(bauer.toString());
 		});
 		System.out.println("");
+		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+
+		System.out.println("--------------------------------------------");
+
+		System.out.println("TESTING HAZELCAST CLIENT");
+		System.out.println("--------------------------------------------");
+		
+		HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig);
+		
+
+		Map<String, String> map = client.getMap("my-distributed-map");
+		
+
+		System.out.println(map.get("1"));
+		System.out.println(map.get("2"));
+		System.out.println(map.get("3"));
 		
 	}
 
